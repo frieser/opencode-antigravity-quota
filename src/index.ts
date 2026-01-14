@@ -119,6 +119,13 @@ export const plugin: Plugin = async (ctx) => {
             const content = await fs.readFile(CONFIG_PATH, "utf-8");
             const data = JSON.parse(content) as AccountsConfig;
 
+            // Handle missing emails by assigning default names
+            data.accounts.forEach((acc, index) => {
+              if (!acc.email) {
+                acc.email = `account-${index + 1}`;
+              }
+            });
+
             let output = "# ☁️ Quota Status\n\n";
 
             const quotaResults = await fetchAllAccountsQuotaSequentially(data.accounts);
