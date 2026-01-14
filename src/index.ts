@@ -1,7 +1,7 @@
 import { type Plugin, tool } from "@opencode-ai/plugin";
 import * as fs from "fs/promises";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
-import { COMMAND_DIR, COMMAND_FILE, COMMAND_CONTENT, CONFIG_PATH } from "./constants";
+import { COMMAND_DIR, COMMAND_FILE, COMMAND_CONTENT, CONFIG_PATHS } from "./constants";
 import { AccountsConfig, AccountQuotaResult, Account } from "./types";
 import { fetchAccountQuota } from "./api";
 import { delay, formatDuration, shortEmail, progressBar } from "./utils";
@@ -112,11 +112,19 @@ export const plugin: Plugin = async (ctx) => {
         args: {},
         async execute(args, ctx) {
           try {
-            if (!existsSync(CONFIG_PATH)) {
-               return `❌ Error: Configuration file not found at ${CONFIG_PATH}.\n\nPlease ensure you have installed and configured 'opencode-antigravity-auth'. This plugin relies on it for account credentials.`;
+            let configPath = null;
+            for (const p of CONFIG_PATHS) {
+              if (existsSync(p)) {
+                configPath = p;
+                break;
+              }
             }
 
-            const content = await fs.readFile(CONFIG_PATH, "utf-8");
+            if (!configPath) {
+               return `❌ Error: Configuration file not found. Checked paths:\n${CONFIG_PATHS.map(p => `- ${p}`).join("\n")}\n\nPlease ensure you have installed and configured 'opencode-antigravity-auth'. This plugin relies on it for account credentials.`;
+            }
+
+            const content = await fs.readFile(configPath, "utf-8");
             const data = JSON.parse(content) as AccountsConfig;
 
             // Handle missing emails by assigning default names

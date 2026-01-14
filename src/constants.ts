@@ -54,3 +54,16 @@ export const CLOUDCODE_METADATA = {
 };
 
 export const CONFIG_PATH = path.join(configBase, "antigravity-accounts.json");
+
+// Define data directory for alternative plugin storage (shekohex/opencode-google-antigravity-auth)
+// Windows: Same as configBase
+// Mac/Linux: $XDG_DATA_HOME/opencode or ~/.local/share/opencode
+const xdgData = process.env.XDG_DATA_HOME || path.join(os.homedir(), ".local", "share");
+const dataBase = isWindows
+  ? configBase
+  : path.join(xdgData, "opencode");
+
+export const CONFIG_PATHS = Array.from(new Set([
+  CONFIG_PATH,
+  path.join(dataBase, "antigravity-accounts.json")
+]));
