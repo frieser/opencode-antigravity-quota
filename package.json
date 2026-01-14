@@ -19,6 +19,7 @@
     "private": false,
     "devDependencies": {
         "@types/bun": "latest",
+        "@types/node": "^25.0.8",
         "typescript": "^5"
     },
     "dependencies": {
