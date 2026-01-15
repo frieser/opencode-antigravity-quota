@@ -1,6 +1,6 @@
 {
     "name": "opencode-antigravity-quota",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "OpenCode plugin to check Antigravity/Gemini Cli model quotas",
     "main": "src/index.ts",
     "type": "module",
