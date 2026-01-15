@@ -10,7 +10,10 @@ const configBase = isWindows
   ? path.join(os.homedir(), "AppData", "Roaming", "opencode")
   : path.join(os.homedir(), ".config", "opencode");
 
-export const COMMAND_DIR = path.join(configBase, "command");
+// OpenCode seems to always use .config/opencode for commands, even on Windows
+const commandBase = path.join(os.homedir(), ".config", "opencode");
+
+export const COMMAND_DIR = path.join(commandBase, "command");
 export const COMMAND_FILE = path.join(COMMAND_DIR, "antigravity-quota.md");
 export const COMMAND_CONTENT = `---
 description: Check Antigravity quota status for all configured Google accounts
