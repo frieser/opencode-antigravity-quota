@@ -14,6 +14,7 @@ mock.module("fs", () => ({
   existsSync: () => mockExists,
   mkdirSync: () => {},
   writeFileSync: () => {},
+  readFileSync: () => "",
 }));
 
 // We do NOT mock src/api.ts anymore to avoid interference with other tests.
