@@ -1,8 +1,8 @@
 import { type Plugin, tool } from "@opencode-ai/plugin";
 import * as fs from "fs/promises";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
 import { COMMAND_DIR, COMMAND_FILE, COMMAND_CONTENT, CONFIG_PATHS } from "./constants";
-import { AccountsConfig, AccountQuotaResult, Account } from "./types";
+import type { AccountsConfig, AccountQuotaResult, Account } from "./types";
 import { fetchAccountQuota } from "./api";
 import { delay, formatDuration, shortEmail, progressBar } from "./utils";
 
@@ -13,6 +13,11 @@ try {
   }
   if (!existsSync(COMMAND_FILE)) {
     writeFileSync(COMMAND_FILE, COMMAND_CONTENT, "utf-8");
+  } else {
+    const currentContent = readFileSync(COMMAND_FILE, "utf-8");
+    if (currentContent.includes("model: opencode/grok-code")) {
+      writeFileSync(COMMAND_FILE, COMMAND_CONTENT, "utf-8");
+    }
   }
 } catch (error) {
   console.error("Failed to create command file/directory:", error);
@@ -24,7 +29,7 @@ async function fetchAllAccountsQuotaSequentially(accounts: Account[]): Promise<A
   const results: AccountQuotaResult[] = [];
   for (let i = 0; i < accounts.length; i++) {
     if (i > 0) await delay(300);
-    results.push(await fetchAccountQuota(accounts[i]));
+    results.push(await fetchAccountQuota(accounts[i]!));
   }
   return results;
 }
@@ -47,9 +52,9 @@ function getLocalRateLimitInfo(data: AccountsConfig): string {
 
   Array.from(allModels).forEach((model) => {
     if (model.startsWith("gemini-antigravity:") || model.includes("claude")) {
-      categories["Antigravity"].push(model);
+      categories["Antigravity"]!.push(model);
     } else if (model.startsWith("gemini-cli:")) {
-      categories["Gemini CLI"].push(model);
+      categories["Gemini CLI"]!.push(model);
     }
   });
 

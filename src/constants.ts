@@ -14,7 +14,6 @@ export const COMMAND_DIR = path.join(configBase, "command");
 export const COMMAND_FILE = path.join(COMMAND_DIR, "antigravity-quota.md");
 export const COMMAND_CONTENT = `---
 description: Check Antigravity quota status for all configured Google accounts
-model: opencode/grok-code
 ---
 
 Use the \`antigravity_quota\` tool to check the current quota status.
