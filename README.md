@@ -28,7 +28,7 @@ Add the plugin to your `opencode.json`, along with the `opencode-antigravity-aut
 ```json
 "plugin": [
     "opencode-antigravity-auth@1.2.8",
-    "opencode-antigravity-quota@0.1.4"
+    "opencode-antigravity-quota@0.1.5"
 ],
 ```
 
