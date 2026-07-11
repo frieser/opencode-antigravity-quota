@@ -21,10 +21,7 @@ describe("Constants", () => {
     // Use a cache-busting query to force re-evaluation of the module
     const constants = await import(`../src/constants.ts?update=${Date.now()}`);
     
-    const isWindows = os.platform() === "win32";
-    const expectedConfigBase = isWindows
-      ? path.join(os.homedir(), "AppData", "Roaming", "opencode")
-      : path.join(os.homedir(), ".config", "opencode");
+    const expectedConfigBase = path.join(os.homedir(), ".config", "opencode");
     
     expect(constants.CONFIG_PATH).toBe(path.join(expectedConfigBase, "antigravity-accounts.json"));
     

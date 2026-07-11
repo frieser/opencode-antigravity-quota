@@ -1,18 +1,13 @@
 import * as path from "path";
 import * as os from "os";
 
-const isWindows = os.platform() === "win32";
-
 const opencodeConfigDir = process.env.OPENCODE_CONFIG_DIR;
 
-// Define base configuration directory based on OS
-// Windows: %APPDATA%/opencode (e.g., C:\Users\User\AppData\Roaming\opencode)
-// Mac/Linux: ~/.config/opencode
+// Define base configuration directory
+// Windows/Mac/Linux: ~/.config/opencode
 const configBase = opencodeConfigDir
   ? opencodeConfigDir
-  : isWindows
-    ? path.join(os.homedir(), "AppData", "Roaming", "opencode")
-    : path.join(os.homedir(), ".config", "opencode");
+  : path.join(os.homedir(), ".config", "opencode");
 
 // OpenCode seems to always use .config/opencode for commands, even on Windows
 const commandBase = opencodeConfigDir
@@ -69,9 +64,7 @@ export const CONFIG_PATH = path.join(configBase, "antigravity-accounts.json");
 const xdgData = process.env.XDG_DATA_HOME || path.join(os.homedir(), ".local", "share");
 const dataBase = opencodeConfigDir
   ? opencodeConfigDir
-  : isWindows
-    ? configBase
-    : path.join(xdgData, "opencode");
+  : path.join(xdgData, "opencode");
 
 export const CONFIG_PATHS = Array.from(new Set([
   CONFIG_PATH,
